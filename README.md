@@ -5,8 +5,8 @@
 [Installing WireGuard](https://www.wireguard.com/install/).
 
 ## Contents
-0. [:pencil2: DNS A record](https://github.com/Dauxdu/vaultwarden#0-%EF%B8%8F-dns-a-record)
-1. [:penguin: Linux](https://github.com/Dauxdu/vaultwarden#1--linux)
+1. [1. 🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
+2. [2. 🐉 WireGuard](https://github.com/Dauxdu/wireguard#2--wireguard)
 
 ### 1. 🐧 Linux
 Updating repositories and installing kernel updates
