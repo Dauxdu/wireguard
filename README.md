@@ -6,8 +6,8 @@
 
 ## Contents
 1. [1. 🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
-2. [2. 🐉 WireGuard Server](https://github.com/Dauxdu/wireguard#2--wireguard)
-3. [3. 🐲 WireGuard Client](https://github.com/Dauxdu/wireguard#3--wireguard)
+2. [2. 🐉 WireGuard Server](https://github.com/Dauxdu/wireguard#2--wireguard-server)
+3. [3. 🐲 WireGuard Client](https://github.com/Dauxdu/wireguard#3--wireguard-client)
 
 ### 1. 🐧 Linux
 Updating repositories and installing kernel updates
