@@ -6,7 +6,8 @@
 
 ## Contents
 1. [1. 🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
-2. [2. 🐉 WireGuard](https://github.com/Dauxdu/wireguard#2--wireguard)
+2. [2. 🐉 WireGuard Server](https://github.com/Dauxdu/wireguard#2--wireguard)
+3. [3. 🐲 WireGuard Client](https://github.com/Dauxdu/wireguard#3--wireguard)
 
 ### 1. 🐧 Linux
 Updating repositories and installing kernel updates
@@ -14,7 +15,7 @@ Updating repositories and installing kernel updates
 apt update && apt upgrade -y
 ```
 
-### 2. 🐉 WireGuard
+### 2. 🐉 WireGuard Server
 Then reboot the operating system, and after the reboot install WireGuard
 ```
 apt install -y wireguard
@@ -73,43 +74,69 @@ sysctl -p
 ```
 net.ipv4.ip_forward = 1
 ```
-
-Включаем systemd демон с wireguard:
+Starting the WireGuard service
+```
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
+```
+Checking the status of WireGuard
+```
 systemctl status wg-quick@wg0.service
+```
+Active status, so the service has successfully started
+```
+wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
+     Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; vendor preset: enabled)
+     Active: active (exited) since Thu 2022-11-17 00:10:00 MSK; 19h ago
+       Docs: man:wg-quick(8)
+             man:wg(8)
+             https://www.wireguard.com/
+             https://www.wireguard.com/quickstart/
+             https://git.zx2c4.com/wireguard-tools/about/src/man/wg-quick.8
+             https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8
+    Process: 8186 ExecStart=/usr/bin/wg-quick up wg0 (code=exited, status=0/SUCCESS)
+   Main PID: 8186 (code=exited, status=0/SUCCESS)
+        CPU: 65ms
 
-Создаём ключи клиента:
-wg genkey | tee /etc/wireguard/goloburdin_privatekey | wg pubkey | tee /etc/wireguard/goloburdin_publickey
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru systemd[1]: Starting WireGuard via wg-quick(8) for wg0...
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] ip link add wg0 type wireguard
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] wg setconf wg0 /dev/fd/63
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] ip -4 address add xxx.xxx.xxx.xxx/24 dev wg0
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] ip link set mtu 1420 up dev wg0
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j M>
+Nov 17 01:10:22 1106495-cm47318.tmweb.ru systemd[1]: Finished WireGuard via wg-quick(8) for wg0.
 
-Добавляем в конфиг сервера клиента:
-vim /etc/wireguard/wg0.conf
-
+```
+### 3. 🐲 WireGuard Client
+Create client keys
+```
+wg genkey | tee /etc/wireguard/username_privatekey | wg pubkey | tee /etc/wireguard/username_publickey
+```
+Adding a client entry to the server configuration
+```
+nano /etc/wireguard/wg0.conf
+```
+Replace username_publickey with the contents of /etc/wireguard/username_publickey
+```
 [Peer]
-PublicKey = <goloburdin_publickey>
-AllowedIPs = 10.0.0.2/32
-
-Вместо <goloburdin_publickey>  — заменяем на содержимое файла /etc/wireguard/goloburdin_publickey
-
-Перезагружаем systemd сервис с wireguard:
+PublicKey = username_publickey
+AllowedIPs = 10.0.8.2/32
+```
+Restarting the WireGuard service
+```
 systemctl restart wg-quick@wg0
-systemctl status wg-quick@wg0
-
-На локальной машине (например, на ноутбуке) создаём текстовый файл с конфигом клиента:
-
-vim goloburdin_wb.conf
-
+```
+The next step is to create a configuration file on the device that will connect to our WireGuard VPN server via the official WireGuard client
+```
 [Interface]
-PrivateKey = <CLIENT-PRIVATE-KEY>
-Address = 10.0.0.2/32
-DNS = 8.8.8.8
+PrivateKey = username_privatekey
+Address = 10.0.8.2/32
+DNS = 1.1.1.1
 
 [Peer]
-PublicKey = <SERVER-PUBKEY>
-Endpoint = <SERVER-IP>:51830
+PublicKey = publickey
+Endpoint = xxx.xxx.xxx.xxx:51830
 AllowedIPs = 0.0.0.0/0
-PersistentKeepalive = 20
-
-Здесь <CLIENT-PRIVATE-KEY> заменяем на приватный ключ клиента, то есть содержимое файла /etc/wireguard/goloburdin_privatekey на сервере.  <SERVER-PUBKEY> заменяем на публичный ключ сервера, то есть на содержимое файла /etc/wireguard/publickey на сервере. <SERVER-IP> заменяем на IP сервера. 
-
-Этот файл открываем в Wireguard клиенте (есть для всех операционных систем, в том числе мобильных) — и жмем в клиенте кнопку подключения.
+PersistentKeepalive = 10
+```
+Open this file in the WireGuard client on the client device
