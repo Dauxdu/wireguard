@@ -1,8 +1,7 @@
 # **🤔 HOW TO install WireGuard using Linux**
 
 ## Official repository
-[Official website](https://www.wireguard.com/)
-[Installing WireGuard](https://www.wireguard.com/install/).
+[Website](https://www.wireguard.com/) | [Installing WireGuard](https://www.wireguard.com/install/)
 
 ## Contents
 1. [1. 🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
