@@ -97,13 +97,13 @@ wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
    Main PID: 8186 (code=exited, status=0/SUCCESS)
         CPU: 65ms
 
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru systemd[1]: Starting WireGuard via wg-quick(8) for wg0...
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] ip link add wg0 type wireguard
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] wg setconf wg0 /dev/fd/63
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] ip -4 address add xxx.xxx.xxx.xxx/24 dev wg0
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] ip link set mtu 1420 up dev wg0
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru wg-quick[8186]: [#] iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j M>
-Nov 17 01:10:22 1106495-cm47318.tmweb.ru systemd[1]: Finished WireGuard via wg-quick(8) for wg0.
+Nov 17 00:10:22 DOMAIN systemd[1]: Starting WireGuard via wg-quick(8) for wg0...
+Nov 17 00:10:22 DOMAIN wg-quick[8186]: [#] ip link add wg0 type wireguard
+Nov 17 00:10:22 DOMAIN wg-quick[8186]: [#] wg setconf wg0 /dev/fd/63
+Nov 17 00:10:22 DOMAIN wg-quick[8186]: [#] ip -4 address add xxx.xxx.xxx.xxx/24 dev wg0
+Nov 17 00:10:22 DOMAIN wg-quick[8186]: [#] ip link set mtu 1420 up dev wg0
+Nov 17 00:10:22 DOMAIN wg-quick[8186]: [#] iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j M>
+Nov 17 00:10:22 DOMAIN systemd[1]: Finished WireGuard via wg-quick(8) for wg0.
 
 ```
 ### 3. 🐲 WireGuard Client
