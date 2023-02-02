@@ -52,7 +52,7 @@ Edit the server configuration file
 ```
 nano /etc/wireguard/wg0.conf
 ```
-Replace YourPrivateKey with the contents of /etc/wireguard/privatekey.
+Replace **YourPrivateKey** with the contents of */etc/wireguard/privatekey*.
 PostUp and PostDown lines use network interface eth0. If you have a different one, replace eth0 with yours.
 ```
 [Interface]
@@ -115,7 +115,7 @@ Adding a client entry to the server configuration
 ```
 nano /etc/wireguard/wg0.conf
 ```
-Replace username_publickey with the contents of /etc/wireguard/username_publickey
+Replace username_publickey with the contents of */etc/wireguard/username_publickey*.
 ```
 [Peer]
 PublicKey = username_publickey
