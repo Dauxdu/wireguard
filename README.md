@@ -57,7 +57,7 @@ PostUp and PostDown lines use network interface eth0. If you have a different on
 ```
 [Interface]
 PrivateKey = YourPrivateKey
-Address = 10.0.8.1/24
+Address = 10.0.8.1/32
 ListenPort = 51830
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
