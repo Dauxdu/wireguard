@@ -4,9 +4,9 @@
 [Website](https://www.wireguard.com/) | [Installing WireGuard](https://www.wireguard.com/install/)
 
 ## Contents
-1. [1. 🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
-2. [2. 🐉 WireGuard Server](https://github.com/Dauxdu/wireguard#2--wireguard-server)
-3. [3. 🐲 WireGuard Client](https://github.com/Dauxdu/wireguard#3--wireguard-client)
+1. [🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
+2. [🐉 WireGuard Server](https://github.com/Dauxdu/wireguard#2--wireguard-server)
+3. [🐲 WireGuard Client](https://github.com/Dauxdu/wireguard#3--wireguard-client)
 
 ### 1. 🐧 Linux
 Updating repositories and installing kernel updates
@@ -106,6 +106,7 @@ Nov 17 00:10:22 DOMAIN wg-quick[8186]: [#] iptables -A FORWARD -i wg0 -j ACCEPT;
 Nov 17 00:10:22 DOMAIN systemd[1]: Finished WireGuard via wg-quick(8) for wg0.
 
 ```
+
 ### 3. 🐲 WireGuard Client
 Create client keys
 ```
