@@ -62,16 +62,10 @@ ListenPort = 51830
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 ```
-Setting up IP forwarding
+Setting up IP forwarding. In ``/etc/sysctl.conf``, remove # from ``net.ipv4.ip_forward=1``
 ```
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-```
-Checking 
-```
-sysctl -p
-```
-```
-net.ipv4.ip_forward = 1
+nano /etc/sysctl.conf
+net.ipv4.ip_forward=1
 ```
 Starting the WireGuard service
 ```
