@@ -1,37 +1,51 @@
 # **🤔 HOW TO install WireGuard using Linux**
 
 ## Official repository
+
 [Website](https://www.wireguard.com/) | [Installing WireGuard](https://www.wireguard.com/install/)
 
 ## Contents
+
 1. [🐧 Linux](https://github.com/Dauxdu/wireguard#1--linux)
 2. [🐉 WireGuard Server](https://github.com/Dauxdu/wireguard#2--wireguard-server)
 3. [🐲 WireGuard Client](https://github.com/Dauxdu/wireguard#3--wireguard-client)
 
 ### 1. 🐧 Linux
+
 Updating repositories and installing kernel updates
-``` Bash
+
+```Bash
 apt update && apt upgrade -y
 ```
 
 ### 2. 🐉 WireGuard Server
+
 Then reboot the operating system, and after the reboot install WireGuard
-``` Bash
+
+```Bash
 apt install -y wireguard
 ```
+
 Generate server private and public keys
-``` Bash
+
+```Bash
 wg genkey | tee /etc/wireguard/privatekey | wg pubkey | tee /etc/wireguard/publickey
 ```
+
 Set private key rights to owner only
-``` Bash
+
+```Bash
 chmod 600 /etc/wireguard/privatekey
 ```
+
 Check the name of the network interface
-``` Bash
+
+```Bash
 ip a
 ```
+
 My main network adapter is called eth0, if your adapter has a different name, replace eth0 with your
+
 ```
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -48,12 +62,16 @@ My main network adapter is called eth0, if your adapter has a different name, re
     inet6 xxxx::xxxx:xxxx:xxxx:xxxx/64 scope link
        valid_lft forever preferred_lft forever
 ```
+
 Edit the server configuration file
-``` Bash
+
+```Bash
 nano /etc/wireguard/wg0.conf
 ```
-Replace **YourPrivateKey** with the contents of */etc/wireguard/privatekey*.
+
+Replace **YourPrivateKey** with the contents of _/etc/wireguard/privatekey_.
 PostUp and PostDown lines use network interface eth0. If you have a different one, replace eth0 with yours.
+
 ```
 [Interface]
 PrivateKey = YourPrivateKey
@@ -62,21 +80,29 @@ ListenPort = 51830
 PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 ```
-Setting up IP forwarding. In ``/etc/sysctl.conf``, remove # from ``net.ipv4.ip_forward=1``
-``` Bash
+
+Setting up IP forwarding. In `/etc/sysctl.conf`, remove # from `net.ipv4.ip_forward=1`
+
+```Bash
 nano /etc/sysctl.conf
 net.ipv4.ip_forward=1
 ```
+
 Starting the WireGuard service
-``` Bash
+
+```Bash
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 ```
+
 Checking the status of WireGuard
-``` Bash
+
+```Bash
 systemctl status wg-quick@wg0.service
 ```
+
 Active status, so the service has successfully started
+
 ```
 wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
      Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; vendor preset: enabled)
@@ -102,25 +128,35 @@ Nov 17 00:10:22 DOMAIN systemd[1]: Finished WireGuard via wg-quick(8) for wg0.
 ```
 
 ### 3. 🐲 WireGuard Client
+
 Create client keys
-``` Bash
+
+```Bash
 wg genkey | tee /etc/wireguard/username_privatekey | wg pubkey | tee /etc/wireguard/username_publickey
 ```
+
 Adding a client entry to the server configuration
-``` Bash
+
+```Bash
 nano /etc/wireguard/wg0.conf
 ```
-Replace username_publickey with the contents of */etc/wireguard/username_publickey*.
+
+Replace username_publickey with the contents of _/etc/wireguard/username_publickey_.
+
 ```
 [Peer]
 PublicKey = username_publickey
 AllowedIPs = 10.0.8.2/32
 ```
+
 Restarting the WireGuard service
-``` Bash
+
+```Bash
 systemctl restart wg-quick@wg0
 ```
+
 The next step is to create a configuration file on the device that will connect to our WireGuard VPN server via the official WireGuard client
+
 ```
 [Interface]
 PrivateKey = username_privatekey
@@ -133,4 +169,5 @@ Endpoint = xxx.xxx.xxx.xxx:51830
 AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 10
 ```
+
 Open this file in the WireGuard client on the client device
